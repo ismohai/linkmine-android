@@ -1,12 +1,16 @@
 package com.linkmine.app
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.linkmine.app.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
 
@@ -17,6 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val OVERLAY_PERMISSION_REQUEST = 1001
+        const val NOTIFICATION_PERMISSION_REQUEST = 1002
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +29,22 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        requestNotificationPermission()
         setupUI()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    NOTIFICATION_PERMISSION_REQUEST
+                )
+            }
+        }
     }
 
     private fun setupUI() {

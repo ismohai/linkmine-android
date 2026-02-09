@@ -26,9 +26,14 @@ class FloatingService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        createNotificationChannel()
-        startForeground(NOTIFICATION_ID, createNotification())
-        createFloatingView()
+        try {
+            createNotificationChannel()
+            startForeground(NOTIFICATION_ID, createNotification())
+            createFloatingView()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            stopSelf()
+        }
     }
 
     private fun createNotificationChannel() {
@@ -92,11 +97,11 @@ class FloatingService : Service() {
     }
 
     private fun setupFloatingViewListeners(params: WindowManager.LayoutParams) {
-        val btnToggle = floatingView?.findViewById<ImageButton>(R.id.btn_toggle)
+        val btnToggle = floatingView?.findViewById<TextView>(R.id.btn_toggle)
         val expandedLayout = floatingView?.findViewById<LinearLayout>(R.id.expanded_layout)
         val etFloatingMessage = floatingView?.findViewById<EditText>(R.id.et_floating_message)
         val btnFloatingSend = floatingView?.findViewById<Button>(R.id.btn_floating_send)
-        val btnClose = floatingView?.findViewById<ImageButton>(R.id.btn_close)
+        val btnClose = floatingView?.findViewById<TextView>(R.id.btn_close)
 
         // 切换展开/收起
         btnToggle?.setOnClickListener {
