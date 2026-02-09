@@ -33,6 +33,11 @@ android {
 
     buildFeatures {
         viewBinding = true
+        buildConfig = true
+    }
+
+    defaultConfig {
+        buildConfigField("String", "GITHUB_TOKEN", "\"${System.getenv("APP_GITHUB_TOKEN") ?: ""}\"")
     }
 }
 

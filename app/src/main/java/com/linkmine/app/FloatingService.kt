@@ -127,7 +127,7 @@ class FloatingService : Service() {
                 
                 scope.launch {
                     val success = withContext(Dispatchers.IO) {
-                        NtfyClient.send(message)
+                        GitHubClient.send(message)
                     }
                     
                     btnFloatingSend.isEnabled = true

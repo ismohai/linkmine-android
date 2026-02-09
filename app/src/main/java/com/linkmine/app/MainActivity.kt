@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        GitHubClient.init(BuildConfig.GITHUB_TOKEN)
         requestNotificationPermission()
         setupUI()
     }
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity() {
 
         scope.launch {
             val success = withContext(Dispatchers.IO) {
-                NtfyClient.send(message)
+                GitHubClient.send(message)
             }
 
             binding.btnSend.isEnabled = true
